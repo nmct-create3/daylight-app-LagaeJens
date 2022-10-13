@@ -1,3 +1,8 @@
+let SunriseElement
+let SunsetElement
+let LocationElement
+let SunElement
+let TimeLeftElement
 // _ = helper functions
 function _parseMillisecondsIntoReadableTime(timestamp) {
 	//Get hours from milliseconds
@@ -31,6 +36,7 @@ let placeSunAndStartMoving = (totalMinutes, sunrise) => {
 
 // 3 Met de data van de API kunnen we de app opvullen
 let showResult = queryResponse => {
+
 	// We gaan eerst een paar onderdelen opvullen
 	// Zorg dat de juiste locatie weergegeven wordt, volgens wat je uit de API terug krijgt.
 	// Toon ook de juiste tijd voor de opkomst van de zon en de zonsondergang.
@@ -50,6 +56,38 @@ let getAPI = (endpoint) => {
 	// Met de fetch API proberen we de data op te halen.
 	// Als dat gelukt is, gaan we naar onze showResult functie.
 };
+const setDOMElements = () => {
+	console.log("test");
+	SunriseElement = document.querySelector('.js-sunrise');
+	SunsetElement = document.querySelector('.js-sunset');
+	LocationElement = document.querySelector('.js-location');
+	SunElement = document.querySelector('.js-sun');
+	TimeLeftElement = document.querySelector('.js-time-left');
+
+	if (!SunriseElement || !SunsetElement || !LocationElement) {
+		throw new Error('DOM element not found');
+	}
+}
+
+const updateTimeAndTimeLeft = (city) => {
+	const now = new Date();
+	const timeLeft = city.sunset - now.getTime() / 1000;
+	const timeLeftElement = document.querySelector('.js-time-left');
+	timeLeftElement.innertext = `${Math.round(timeLeft / 60)} minutes left`;
+}
+
+
+const makeReadableTime = (timestamp) => {
+	return new Date(timestamp * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+const setLocationdata = (city) => {
+	console.log("test");
+	SunriseElement.innertext = makeReadableTime(city.sunrise);
+	SunsetElement.innertext = makeReadableTime(city.sunset);
+	LocationElement.innertext = `${city.name}, ${city.country}`;
+}
+
 const getData = (endpoint) => {
 	return fetch(endpoint)
 		.then((r) => r.json())
@@ -64,4 +102,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 	const endpoint = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=a733c6d9a85be2c82a95d193c5365dbd&units=metric&lang=nl&cnt=1`
 	const { city } = await getData(endpoint);
 	console.log(city);
+	setLocationdata(city);
+	updateTimeAndTimeLeft(city);
+
 });
