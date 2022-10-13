@@ -39,13 +39,29 @@ let showResult = queryResponse => {
 };
 
 // 2 Aan de hand van een longitude en latitude gaan we de yahoo wheater API ophalen.
-let getAPI = (lat, lon) => {
+let getAPI = (endpoint) => {
+	fetch
+		(endpoint)
+		.then((r) => r.json())
+		.then((data) => {
+			console.log(data)
+		});
 	// Eerst bouwen we onze url op
 	// Met de fetch API proberen we de data op te halen.
 	// Als dat gelukt is, gaan we naar onze showResult functie.
 };
+const getData = (endpoint) => {
+	return fetch(endpoint)
+		.then((r) => r.json())
+		.catch((error) => { console.log(error) });
+}
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function () {
 	// 1 We will query the API with longitude and latitude.
-	getAPI(50.8027841, 3.2097454);
+	// getAPI(50.8027841, 3.2097454)
+	let lat = 50.8934;
+	let lon = 3.3365;
+	const endpoint = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=a733c6d9a85be2c82a95d193c5365dbd&units=metric&lang=nl&cnt=1`
+	const { city } = await getData(endpoint);
+	console.log(city);
 });
