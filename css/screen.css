@@ -1,6 +1,19 @@
 /*------------------------------------*\
 #FONTS
 \*------------------------------------*/
+@font-face {
+    font-family: "Work Sans";
+    font-weight: 400;
+    src: url("../fonts/DM_Sans/WorkSans-Regular.ttf") format("truetype");
+}
+
+/* @font-face {
+    font-family: "Work Sans";
+    font-weight: 600;
+    src: url("../fonts/DM_Sans/WorkSans-Bold.ttf") format("truetype");
+} */
+
+
 
 /*------------------------------------*\
 #Variables
@@ -8,7 +21,11 @@
 
 :root {
     /* colors */
+    --color-light: hsla(208, 100%, 90%, 1);
+    --color-dark: hsla(208, 70%, 20%, 1);
 
+    --color-front: var(--color-dark);
+    --color-back: var(--color-light);
     /* opacity */
 
     /* transitions */
@@ -27,8 +44,10 @@
 html {
     font-size: 16px;
     line-height: 1.5;
-    font-family: Helvetica, arial, sans-serif;
+    font-family: "Work Sans", sans-serif;
     box-sizing: border-box;
+    color: var(--color-front);
+    background-color: var(--color-back);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -46,14 +65,10 @@ html {
 * Customize the background color to match your design.
 */
 
-::-moz-selection {
-    background: red;
-    color: white;
-    text-shadow: none;
-}
+
 
 ::selection {
-    background: red;
+    background: var(--color-front);
     color: white;
     text-shadow: none;
 }
@@ -249,6 +264,12 @@ input::placeholder {
 */
 
 .c-logo {
+    display: flex;
+    /* width: 100%;
+    height: 100%; */
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-front);
 
 }
 
@@ -259,11 +280,16 @@ input::placeholder {
 */
 
 .c-sun {
-
+    --local-sun-size: 1.375rem;
+    display: flex;
+    justify-content: center;
+    fill: var(--color-front);
+    width: var(--local-sun-size);
+    height: var(--local-sun-size);
 }
 
 .c-logo .c-sun {
-
+    margin-right: 8px;
 }
 
 /*
@@ -272,11 +298,80 @@ input::placeholder {
     Main app wrapper
 */
 
+
+/* .c-app de juiste maximum breedte en nodige padding krijgt zoals in het design
+.c-app gecentreerd wordt in het midden.
+.c-app__summary de juiste font-size en line-height krijgt. */
+.c-app {
+    min-height: 100vh;
+    /* 1rem = body font size = 16px */
+    padding: 2rem 2rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.c-app_summary {
+    font-size: 1, 75rem;
+    line-height: 2, 5rem;
+}
+
 /*
     Component: Horizon
     ---
     Horizon with sun visualisation
 */
+
+.c-horizon {
+    margin-bottom: 2.125rem;
+}
+
+.c-horizon__sky-wrapper {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.c-horizon__sky {
+    position: relative;
+    height: 100%;
+}
+
+.c-horizon__sun ::before {
+    content: attr(data-time);
+    display: block;
+    margin-bottom: 8px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.c-sun {}
+
+.c-horizon__line {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--color-front);
+    padding: 0.5rem;
+
+}
+
+.c-horizon__sun {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+}
+
+.c-horizon__time {
+    font-size: 0.75rem;
+    line-height: 0.875rem;
+}
 
 /*------------------------------------*\
 #UTILITIES
@@ -286,6 +381,10 @@ input::placeholder {
     Utilities: Mute
     Mute with opacity
 */
+.u-muted {
+    color: var(--color-front);
+    opacity: 0.7;
+}
 
 /*------------------------------------*\
 #STATES
@@ -309,6 +408,7 @@ input::placeholder {
 */
 
 @media print {
+
     *,
     *:before,
     *:after {
@@ -319,16 +419,20 @@ input::placeholder {
         box-shadow: none !important;
         text-shadow: none !important;
     }
+
     a,
     a:visited {
         text-decoration: underline;
     }
+
     a[href]:after {
-        content: " (" attr(href) ")";
+        content: " ("attr(href) ")";
     }
+
     abbr[title]:after {
-        content: " (" attr(title) ")";
+        content: " ("attr(title) ")";
     }
+
     /*
     * Don't show links that are fragment identifiers,
     * or use the `javascript:` pseudo protocol
@@ -337,14 +441,17 @@ input::placeholder {
     a[href^="javascript:"]:after {
         content: "";
     }
+
     pre {
         white-space: pre-wrap !important;
     }
+
     pre,
     blockquote {
         border: 1px solid #999;
         page-break-inside: avoid;
     }
+
     /*
     * Printing Tables:
     * http://css-discuss.incutio.com/wiki/Printing_Tables
@@ -352,16 +459,19 @@ input::placeholder {
     thead {
         display: table-header-group;
     }
+
     tr,
     img {
         page-break-inside: avoid;
     }
+
     p,
     h2,
     h3 {
         orphans: 3;
         widows: 3;
     }
+
     h2,
     h3 {
         page-break-after: avoid;
